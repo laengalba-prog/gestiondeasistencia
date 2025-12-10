@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gestión de Clases | La Engalba</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+  <style>
+    :root {
+      --color-primario: #B5AAD2;
+      --color-secundario: #EE7D2D;
+      --color-verde: #376953;
+      --color-verde-claro: #14A781;
+      --color-fondo: #E0D0E7;
+    }
+    body {
+      background-color: var(--color-fondo);
+      font-family: 'Montserrat', sans-serif;
+      color: #333;
+    }
+    header, nav, footer {
+      background-color: var(--color-primario);
+      color: white;
+    }
+    nav ul li a {
+      color: white;
+    }
+    .logo {
+      height: 50px;
+    }
+    main.container {
+      padding: 2rem 0;
+    }
+    .calendar {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .calendar th, .calendar td {
+      border: 1px solid #ccc;
+      text-align: center;
+      padding: 0.75rem;
+    }
+    .ocupada {
+      background-color: var(--color-secundario);
+      color: white;
+    }
+    .libre {
+      background-color: var(--color-verde-claro);
+      color: white;
+    }
+    .pendiente {
+      background-color: var(--color-verde);
+      color: white;
+    }
+    .botones-calendario {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 1rem;
+    }
+    .botones-calendario select {
+      margin-left: 1rem;
+    }
+    .oculto {
+      display: none;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navegación -->
+  <nav class="container-fluid">
+    <ul>
+      <li><strong>La Engalba</strong></li>
+    </ul>
+    <ul>
+      <li><a href="#" onclick="mostrarSeccion('login')">Inicio</a></li>
+      <li><a href="#" onclick="mostrarSeccion('panelAlumno')">Alumno</a></li>
+      <li><a href="#" onclick="mostrarSeccion('panelAdmin')">Administrador</a></li>
+    </ul>
+  </nav>
+
+  <!-- LOGIN / REGISTRO -->
+  <main id="login" class="container">
+    <div class="grid">
+      <section>
+        <hgroup>
+          <h2>Acceso a la Plataforma</h2>
+          <h3>Gestión de clases y recuperaciones</h3>
+        </hgroup>
+        <form>
+          <input type="text" placeholder="Nombre completo" required>
+          <input type="email" placeholder="Correo electrónico" required>
+          <input type="password" placeholder="Contraseña" required>
+          <button type="submit" onclick="event.preventDefault(); mostrarSeccion('panelAlumno');">Entrar</button>
+        </form>
+        <p>¿Eres administrador? <a href="#" onclick="mostrarSeccion('panelAdmin')">Accede aquí</a>.</p>
+      </section>
+    </div>
+  </main>
+
+  <!-- PANEL ALUMNO -->
+  <main id="panelAlumno" class="container oculto">
+    <div class="grid">
+      <section>
+        <hgroup>
+          <h2>Panel del Alumno</h2>
+          <h3>Bienvenido/a, [Nombre Alumno]</h3>
+        </hgroup>
+
+        <div class="botones-calendario">
+          <label for="vista">Vista:</label>
+          <select id="vista" onchange="cambiarVista()">
+            <option value="semanal" selected>Semanal</option>
+            <option value="mensual">Mensual</option>
+          </select>
+        </div>
+
+        <!-- Vista Semanal -->
+        <div id="vistaSemanal">
+          <table class="calendar">
+            <thead>
+              <tr>
+                <th>Hora</th>
+                <th>Lunes</th>
+                <th>Martes</th>
+                <th>Miércoles</th>
+                <th>Jueves</th>
+                <th>Viernes</th>
+                <th>Sábado</th>
+                <th>Domingo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>10:00</td>
+                <td class="ocupada">Torno</td>
+                <td class="libre">Libre</td>
+                <td class="pendiente">Recuperar</td>
+                <td class="libre">Libre</td>
+                <td class="ocupada">Modelado</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>19:00</td>
+                <td class="ocupada">Torno</td>
+                <td class="libre">Libre</td>
+                <td class="ocupada">Modelado</td>
+                <td class="pendiente">Recuperar</td>
+                <td class="libre">Libre</td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Vista Mensual -->
+        <div id="vistaMensual" class="oculto">
+          <table class="calendar">
+            <thead>
+              <tr>
+                <th>Lun</th><th>Mar</th><th>Mié</th><th>Jue</th><th>Vie</th><th>Sáb</th><th>Dom</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="ocupada">1</td><td>2</td><td class="libre">3</td><td>4</td><td class="pendiente">5</td><td>6</td><td>7</td>
+              </tr>
+              <tr>
+                <td>8</td><td class="libre">9</td><td>10</td><td>11</td><td class="ocupada">12</td><td>13</td><td>14</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Acciones</h3>
+        <p>Puedes cancelar una clase hasta 2 horas antes o coger una libre hasta 30 minutos antes de comenzar.</p>
+        <button onclick="alert('Clase cancelada correctamente.')">Cancelar clase</button>
+        <button onclick="alert('Has reservado un hueco libre.')">Reservar hueco</button>
+      </section>
+    </div>
+  </main>
+
+  <!-- PANEL ADMINISTRADOR -->
+  <main id="panelAdmin" class="container oculto">
+    <div class="grid">
+      <section>
+        <hgroup>
+          <h2>Panel del Administrador</h2>
+          <h3>Gestión de horarios y alumnos</h3>
+        </hgroup>
+
+        <h3>Abrir nueva clase</h3>
+        <form>
+          <label>Tipo de clase:</label>
+          <select>
+            <option>Torno (7 plazas)</option>
+            <option>Modelado (3 plazas)</option>
+          </select>
+          <label>Fecha y hora:</label>
+          <input type="datetime-local" required>
+          <button type="submit" onclick="event.preventDefault(); alert('Clase abierta correctamente.');">Abrir clase</button>
+        </form>
+
+        <h3>Ocupación semanal</h3>
+        <table class="calendar">
+          <thead>
+            <tr>
+              <th>Clase</th><th>Miércoles</th><th>Viernes</th><th>Lunes</th><th>Martes</th><th>Jueves</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Torno 10:00</td><td>6/7</td><td>5/7</td><td>7/7</td><td>3/7</td><td>7/7</td>
+            </tr>
+            <tr>
+              <td>Modelado 19:00</td><td>3/3</td><td>2/3</td><td>3/3</td><td>3/3</td><td>3/3</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="container">
+    <small>© 2025 La Engalba • <a href="https://laengalba.com" target="_blank">laengalba.com</a></small>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    function mostrarSeccion(id) {
+      document.querySelectorAll('main').forEach(sec => sec.classList.add('oculto'));
+      document.getElementById(id).classList.remove('oculto');
+    }
+    function cambiarVista() {
+      const vista = document.getElementById('vista').value;
+      document.getElementById('vistaSemanal').classList.toggle('oculto', vista !== 'semanal');
+      document.getElementById('vistaMensual').classList.toggle('oculto', vista !== 'mensual');
+    }
+  </script>
+</body>
+</html>
